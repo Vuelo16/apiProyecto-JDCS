@@ -87,14 +87,12 @@ class _CrearProductoState extends State<CrearProducto> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Crear Productos',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
       home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Crear'),
-        ),
         body: Container(
           alignment: Alignment.center,
           padding: const EdgeInsets.all(8),
@@ -104,38 +102,115 @@ class _CrearProductoState extends State<CrearProducto> {
     );
   }
 
-  Column buildColumn() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        TextField(
-          controller: _nombreProd,
-          decoration: const InputDecoration(hintText: 'Digite Nombre'),
-        ),
-        TextField(
-          controller: _descripcion,
-          decoration: const InputDecoration(hintText: 'Digite descripcion'),
-        ),
-         TextField(
-          controller: _categoria,
-          decoration: const InputDecoration(hintText: 'Digite categoria'),
-        ),
-        TextField(
-          controller: _stock,
-          decoration: const InputDecoration(hintText: 'Digite stock'),
-        ),
-        TextField(
-          controller: _stock_min,
-          decoration: const InputDecoration(hintText: 'Digite stock minimo'),
-        ),
-        TextField(
-          controller: _valor_uni,
-          decoration: const InputDecoration(hintText: 'Digite valor unitario'),
-        ),
-          TextField(
-          controller: _estadoProd,
-          decoration: const InputDecoration(hintText: 'Digite Estado'),
-        ),
+  Scaffold buildColumn() {
+    return Scaffold(
+       body:  SingleChildScrollView(
+        child: Padding(padding: const EdgeInsets.symmetric(vertical: 80, horizontal: 200),
+          child: Column(
+            children: [
+          const SizedBox(height: 16),
+              TextFormField(
+      autofocus: true,
+      textCapitalization: TextCapitalization.words,
+      controller: _nombreProd,
+      decoration: const InputDecoration(
+        labelText: 'Nombre',
+        suffixIcon: Icon(Icons.group_outlined),
+        icon: Icon(Icons.assignment_ind_outlined),
+      ),
+      onChanged: (value) {
+        print('value: $value');
+      },
+    ),
+    const SizedBox(height: 16),
+
+    TextFormField(
+      autofocus: true,
+      textCapitalization: TextCapitalization.words,
+      controller: _descripcion,
+      decoration: const InputDecoration(
+        labelText: 'Descripcion',
+        suffixIcon: Icon(Icons.group_outlined),
+        icon: Icon(Icons.assignment_ind_outlined),
+      ),
+      onChanged: (value) {
+        print('value: $value');
+      },
+    ),
+    const SizedBox(height: 16),
+
+    TextFormField(
+      autofocus: true,
+      textCapitalization: TextCapitalization.words,
+      controller: _categoria,
+      decoration: const InputDecoration(
+        labelText: 'Categoria',
+        suffixIcon: Icon(Icons.group_outlined),
+        icon: Icon(Icons.assignment_ind_outlined),
+      ),
+      onChanged: (value) {
+        print('value: $value');
+      },
+    ),
+    const SizedBox(height: 16),
+
+    TextFormField(
+      autofocus: true,
+      textCapitalization: TextCapitalization.words,
+      controller: _stock,
+      decoration: const InputDecoration(
+        labelText: 'Stock',
+        suffixIcon: Icon(Icons.group_outlined),
+        icon: Icon(Icons.assignment_ind_outlined),
+      ),
+      onChanged: (value) {
+        print('value: $value');
+      },
+    ),
+    const SizedBox(height: 16),
+
+    TextFormField(
+      autofocus: true,
+      textCapitalization: TextCapitalization.words,
+      controller: _stock_min,
+      decoration: const InputDecoration(
+        labelText: 'Stock Minimo',
+        suffixIcon: Icon(Icons.group_outlined),
+        icon: Icon(Icons.assignment_ind_outlined),
+      ),
+      onChanged: (value) {
+        print('value: $value');
+      },
+    ),
+    const SizedBox(height: 16),
+
+    TextFormField(
+      autofocus: true,
+      textCapitalization: TextCapitalization.words,
+      controller: _valor_uni,
+      decoration: const InputDecoration(
+        labelText: 'Valor unitario',
+        suffixIcon: Icon(Icons.group_outlined),
+        icon: Icon(Icons.assignment_ind_outlined),
+      ),
+      onChanged: (value) {
+        print('value: $value');
+      },
+    ),
+
+    TextFormField(
+      autofocus: true,
+      textCapitalization: TextCapitalization.words,
+      controller: _estadoProd,
+      decoration: const InputDecoration(
+        labelText: 'Estado',
+        suffixIcon: Icon(Icons.group_outlined),
+        icon: Icon(Icons.assignment_ind_outlined),
+      ),
+      onChanged: (value) {
+        print('value: $value');
+      },
+    ),
         ElevatedButton(
           onPressed: () {
             setState(() {
@@ -145,6 +220,9 @@ class _CrearProductoState extends State<CrearProducto> {
           child: const Text('Crear Producto'),
         ),
       ],
+          ),
+        ),
+       ),
     );
   }
 

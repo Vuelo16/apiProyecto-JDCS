@@ -1,78 +1,21 @@
 import 'dart:async';
+
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_application_api1/home.dart';
 import 'package:http/http.dart' as http;
 
-//https://frontendhbs.onrender.com/
-Future<Product> editProducto(String nombreProd, String descripcion, String categoria, String stock, String stock_min, String valor_uni, String estadoProd) async {
-  final response = await http.put(
-    Uri.parse('https://entregable-node-back.onrender.com/api/producto'),
-    headers: <String, String>{
-      'Content-Type': 'application/json; charset=UTF-8',
-    },
-    body: jsonEncode(<String, String>{
-      "nombreProd": nombreProd,
-        "descripcion": descripcion,
-        "categoria": categoria,
-        "stock": stock,
-        "stock_min": stock_min,
-        "valor_uni": valor_uni,
-        "estadoProd": estadoProd,
-    }),
-  );
-
-  if (response.statusCode == 201) {
-    // If the server did return a 201 CREATED response,
-    // then parse the JSON.
-    return Product.fromJson(jsonDecode(response.body));
-  } else {
-    // If the server did not return a 201 CREATED response,
-    // then throw an exception.
-    throw Exception(response.body);
-  }
-}
-
-class Product {
-  final  String id;
-  final  String nombreProd;
-  final  int descripcion;
-  final  String categoria;
-  final  int stock;
-  final  String stock_min;
-  final double valor_uni;
-  final  bool estadoProd;
-
-  const Product({required this.id, required this.nombreProd, required this.descripcion, required this.categoria, required this.stock, required this.stock_min, required this.valor_uni, required this.estadoProd});
-
-  factory Product.fromJson(Map<String, dynamic> json) {
-    return Product(
-      id: json["_id"],
-        nombreProd: json["nombreProd"],
-        descripcion: json["descripcion"],
-        categoria: json["categoria"],
-        stock: json["stock"],
-        stock_min: json["stock_min"],
-        valor_uni: json["valor_uni"]?.toDouble(),
-        estadoProd: json["estadoProd"],
-    );
-  }
-}
-
-
-void main() {
-  runApp(const editarProducto());
-}
-
 class editarProducto extends StatefulWidget {
-  const editarProducto({super.key});
+  final Product producto;
+
+  const editarProducto({Key? key, required this.producto}) : super(key: key);
 
   @override
   State<editarProducto> createState() {
     return _editarProductoState();
   }
 }
-
 
 class _editarProductoState extends State<editarProducto> {
   final TextEditingController _nombreProd = TextEditingController();
@@ -82,84 +25,211 @@ class _editarProductoState extends State<editarProducto> {
   final TextEditingController _stock_min = TextEditingController();
   final TextEditingController _valor_uni = TextEditingController();
   final TextEditingController _estadoProd = TextEditingController();
-  Future<Product>? _futureProduct;
+
+  @override
+  void initState() {
+    super.initState();
+    _nombreProd.text = widget.producto.nombreProd;
+    _descripcion.text = widget.producto.descripcion;
+    _categoria.text = widget.producto.categoria;
+    _stock.text = widget.producto.stock.toString();
+    _stock_min.text = widget.producto.stock_min.toString();
+    _valor_uni.text = widget.producto.valor_uni.toString();
+    _estadoProd.text = widget.producto.estadoProd.toString();
+  }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Editar Productos',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
       home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Editar'),
-        ),
         body: Container(
           alignment: Alignment.center,
           padding: const EdgeInsets.all(8),
-          child: (_futureProduct == null) ? buildColumn() : buildFutureBuilder(),
+          child: buildColumn(),
         ),
       ),
     );
   }
 
-  Column buildColumn() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        TextField(
-          controller: _nombreProd,
-          decoration: const InputDecoration(hintText: 'Digite Nombre'),
-        ),
-        TextField(
-          controller: _descripcion,
-          decoration: const InputDecoration(hintText: 'Digite descripcion'),
-        ),
-         TextField(
-          controller: _categoria,
-          decoration: const InputDecoration(hintText: 'Digite categoria'),
-        ),
-        TextField(
-          controller: _stock,
-          decoration: const InputDecoration(hintText: 'Digite stock'),
-        ),
-        TextField(
-          controller: _stock_min,
-          decoration: const InputDecoration(hintText: 'Digite stock minimo'),
-        ),
-        TextField(
-          controller: _valor_uni,
-          decoration: const InputDecoration(hintText: 'Digite valor unitario'),
-        ),
-          TextField(
-          controller: _estadoProd,
-          decoration: const InputDecoration(hintText: 'Digite Estado'),
-        ),
+  Scaffold buildColumn() {
+    return Scaffold(
+       body:  SingleChildScrollView(
+        child: Padding(padding: const EdgeInsets.symmetric(vertical: 80, horizontal: 200),
+          child: Column(
+            children: [
+          const SizedBox(height: 16),
+              TextFormField(
+      autofocus: true,
+      textCapitalization: TextCapitalization.words,
+      controller: _nombreProd,
+      decoration: const InputDecoration(
+        labelText: 'Nombre',
+        suffixIcon: Icon(Icons.group_outlined),
+        icon: Icon(Icons.assignment_ind_outlined),
+      ),
+      onChanged: (value) {
+        print('value: $value');
+      },
+    ),
+    const SizedBox(height: 16),
+
+    TextFormField(
+      autofocus: true,
+      textCapitalization: TextCapitalization.words,
+      controller: _descripcion,
+      decoration: const InputDecoration(
+        labelText: 'Descripcion',
+        suffixIcon: Icon(Icons.group_outlined),
+        icon: Icon(Icons.assignment_ind_outlined),
+      ),
+      onChanged: (value) {
+        print('value: $value');
+      },
+    ),
+    const SizedBox(height: 16),
+
+    TextFormField(
+      autofocus: true,
+      textCapitalization: TextCapitalization.words,
+      controller: _categoria,
+      decoration: const InputDecoration(
+        labelText: 'Categoria',
+        suffixIcon: Icon(Icons.group_outlined),
+        icon: Icon(Icons.assignment_ind_outlined),
+      ),
+      onChanged: (value) {
+        print('value: $value');
+      },
+    ),
+    const SizedBox(height: 16),
+
+    TextFormField(
+      autofocus: true,
+      textCapitalization: TextCapitalization.words,
+      controller: _stock,
+      decoration: const InputDecoration(
+        labelText: 'Stock',
+        suffixIcon: Icon(Icons.group_outlined),
+        icon: Icon(Icons.assignment_ind_outlined),
+      ),
+      onChanged: (value) {
+        print('value: $value');
+      },
+    ),
+    const SizedBox(height: 16),
+
+    TextFormField(
+      autofocus: true,
+      textCapitalization: TextCapitalization.words,
+      controller: _stock_min,
+      decoration: const InputDecoration(
+        labelText: 'Stock Minimo',
+        suffixIcon: Icon(Icons.group_outlined),
+        icon: Icon(Icons.assignment_ind_outlined),
+      ),
+      onChanged: (value) {
+        print('value: $value');
+      },
+    ),
+    const SizedBox(height: 16),
+
+    TextFormField(
+      autofocus: true,
+      textCapitalization: TextCapitalization.words,
+      controller: _valor_uni,
+      decoration: const InputDecoration(
+        labelText: 'Valor unitario',
+        suffixIcon: Icon(Icons.group_outlined),
+        icon: Icon(Icons.assignment_ind_outlined),
+      ),
+      onChanged: (value) {
+        print('value: $value');
+      },
+    ),
+
+    TextFormField(
+      autofocus: true,
+      textCapitalization: TextCapitalization.words,
+      controller: _estadoProd,
+      decoration: const InputDecoration(
+        labelText: 'Estado',
+        suffixIcon: Icon(Icons.group_outlined),
+        icon: Icon(Icons.assignment_ind_outlined),
+      ),
+      onChanged: (value) {
+        print('value: $value');
+      },
+    ),
+    const SizedBox(height: 16),
         ElevatedButton(
           onPressed: () {
-            setState(() {
-              _futureProduct = editProducto(_nombreProd.text, _descripcion.text, _categoria.text, _stock.text, _stock_min.text, _valor_uni.text, _estadoProd.text);
-            });
+            final String nuevoNombreProd = _nombreProd.text;
+            final String nuevaDescripcion = _descripcion.text;
+            final String nuevaCategoria = _categoria.text;
+            final String nuevoStock = _stock.text;
+            final String nuevoStockMin = _stock_min.text;
+            final String nuevoValorUni = _valor_uni.text;
+            final String nuevoEstadoProd = _estadoProd.text;
+
+            final Product productoActualizado = Product(
+              id: widget.producto.id,
+              nombreProd: nuevoNombreProd,
+              descripcion: nuevaDescripcion,
+              categoria: nuevaCategoria,
+              stock: int.parse(nuevoStock),
+              stock_min: int.parse(nuevoStockMin),
+              valor_uni: double.parse(nuevoValorUni),
+              estadoProd: bool.fromEnvironment(nuevoEstadoProd),
+            );
+
+            actualizarProducto(context, productoActualizado);
+            
+            // Envía el producto actualizado al servidor o realiza la edición según tus necesidades
+            // Aquí puedes llamar a una función que envíe la solicitud de edición al servidor
+
+            // Después de editar, puedes navegar de regreso a la página anterior o realizar otras acciones
           },
           child: const Text('Editar Producto'),
         ),
       ],
+          ),
+        ),
+       ),
     );
   }
+}
 
-  FutureBuilder<Product> buildFutureBuilder() {
-    return FutureBuilder<Product>(
-      future: _futureProduct,
-      builder: (context, snapshot) {
-        if (snapshot.hasData) {
-          return Text(snapshot.data!.nombreProd);
-        } else if (snapshot.hasError) {
-          return Text('${snapshot.error}');
-        }
+Future<void> actualizarProducto(BuildContext context, Product productoActualizado) async {
+             const url = 'https://entregable-node-back.onrender.com/api/producto/';
 
-        return const CircularProgressIndicator();
-      },
-    );
+  final response = await http.put(
+    Uri.parse(url),
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+    },
+    body: jsonEncode(<String, dynamic>{
+      'nombreProd': productoActualizado.nombreProd,
+      'descripcion': productoActualizado.descripcion,
+      'categoria': productoActualizado.categoria,
+      'stock': productoActualizado.stock,
+      'stock_min': productoActualizado.stock_min,
+      'valor_uni': productoActualizado.valor_uni,
+      'estadoProd': productoActualizado.estadoProd,
+    }),
+  );
+
+  if (response.statusCode == 200) {
+    // El producto se actualizó con éxito en el servidor
+    // Aquí puedes realizar cualquier acción adicional, como navegar de regreso a la página de inicio.
+    print('Producto actualizado con éxito');
+    // Puedes mostrar un mensaje de éxito o realizar otras acciones según tus necesidades.
+  } else {
+    // Hubo un error al actualizar el producto, puedes mostrar un mensaje de error o manejar la situación de otra manera.
+    print('Error al actualizar el producto');
   }
 }

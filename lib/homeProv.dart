@@ -14,6 +14,7 @@ class ProveedorApi extends StatefulWidget {
 
 class _ProveedorApiState extends State<ProveedorApi> {
   bool _isLoading = true;
+  ProveedorModel? dataFromAPI;
 
   @override
   void initState() {
@@ -21,7 +22,6 @@ class _ProveedorApiState extends State<ProveedorApi> {
     _getData();
   }
 
-  ProveedorModel? dataFromAPI;
   _getData() async {
     try {
       String url = "https://project-valisoft-2559218.onrender.com/api/proveedores";
@@ -45,69 +45,81 @@ class _ProveedorApiState extends State<ProveedorApi> {
       body: _isLoading
           ? const Center(
               child: CircularProgressIndicator(),
-            )
-          :Column(
+            ): Center(
+        child: SingleChildScrollView(
+          child: Column(
             children: [
-            Expanded(
-            child: ListView.builder(
-              scrollDirection: Axis.vertical,
-              itemBuilder: (context, index) {
-                final proveedor = dataFromAPI!.proveedors[index];
-                return Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(proveedor.nombre.toString()),
-                      Text(proveedor.categoria.toString()),
-                      Text(proveedor.nit.toString()),
-                      Text(proveedor.email.toString()),                     
-                      Text(proveedor.telefono.toString()),
-                      if(proveedor.estado == true)
-                        const Text ("Activo")
-                      else
-                        const Text("Inactivo")
-                      
+              const SizedBox(height: 16),
+              const Text(
+                "Proveedores",
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 16),
+                  const SizedBox(height: 16),
+                  DataTable(
+                    columns: const [
+                      DataColumn(label: Text('Nombre')),
+                      DataColumn(label: Text('Categoría')),
+                      DataColumn(label: Text('NIT')),
+                      DataColumn(label: Text('Email')),
+                      DataColumn(label: Text('Teléfono')),
+                      DataColumn(label: Text('Estado')),
+                      DataColumn(label: Text('Acciones')),
                     ],
-                  ),
+                    rows: dataFromAPI!.proveedors.map((proveedor) {
+                      return DataRow(cells: [
+                        DataCell(Text(proveedor.nombre.toString())),
+                        DataCell(Text(proveedor.categoria.toString())),
+                        DataCell(Text(proveedor.nit.toString())),
+                        DataCell(Text(proveedor.email.toString())),
+                        DataCell(Text(proveedor.telefono.toString())),
+                        DataCell(proveedor.estado == true
+                            ? const Text("Activo")
+                            : const Text("Inactivo")),
+                        DataCell(Row(children: [IconButton(
+                  icon: const Icon(Icons.edit),
+                  onPressed: () {
+                Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const editarProveedor()),
                 );
-              },
-              itemCount: dataFromAPI!.proveedors.length,
+      },
+    ),
+    IconButton(
+      icon: const Icon(Icons.delete),
+      onPressed: () {
+        // Lógica para eliminar el producto aquí
+        // Puedes mostrar un cuadro de diálogo de confirmación antes de eliminar.
+        // Luego, realiza la eliminación y actualiza la lista de productos.
+      },
+    ),
+  ],
+)),
+                      ]);
+                    }).toList(),
+                  ),
+                ],
+              ),
             ),
+            ),
+            floatingActionButton: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          FloatingActionButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const CrearProveedor()),
+              );
+            },
+            child: const Icon(Icons.add),
           ),
-          ElevatedButton(
-      onPressed: () {
-         Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const CrearProveedor()),
-          );
-      },
-      child: const SizedBox(
-        width: 100,
-        child: Center(
-          child: Text('Crear Proveedor'),
-        ),
-        ),
-    ),
-    const SizedBox(height: 50,),
-    ElevatedButton(
-      onPressed: () {
-         Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const editarProveedor()),
-          );
-      },
-      child: const SizedBox(
-        width: 100,
-        child: Center(
-          child: Text('Editar Proveedor'),
-        ),
-        ),
-    ),
-        const SizedBox(height: 100,),
-
-              ],
-            ),
+          const SizedBox(height: 16),
+        ],
+      ),
     );
   }
 }

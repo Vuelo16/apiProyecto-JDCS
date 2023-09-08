@@ -73,24 +73,22 @@ class editarProveedor extends StatefulWidget {
 
 class _editarProveedorState extends State<editarProveedor> {
   final TextEditingController _nombreProveedor = TextEditingController();
+  final TextEditingController _categoriaProv = TextEditingController();
   final TextEditingController _nit = TextEditingController();
   final TextEditingController _emailProv = TextEditingController();
   final TextEditingController _telefonoProv = TextEditingController();
-  final TextEditingController _categoriaProv = TextEditingController();
   final TextEditingController _estadoProv = TextEditingController();
   Future<Proveed>? _futureProveed;
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Editar Proveedores',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
       home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Editar'),
-        ),
         body: Container(
           alignment: Alignment.center,
           padding: const EdgeInsets.all(8),
@@ -100,34 +98,103 @@ class _editarProveedorState extends State<editarProveedor> {
     );
   }
 
-  Column buildColumn() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        TextField(
-          controller: _nombreProveedor,
-          decoration: const InputDecoration(hintText: 'Digite Nombre'),
-        ),
-        TextField(
-          controller: _nit,
-          decoration: const InputDecoration(hintText: 'Digite Nit'),
-        ),
-         TextField(
-          controller: _emailProv,
-          decoration: const InputDecoration(hintText: 'Digite Email'),
-        ),
-        TextField(
-          controller: _telefonoProv,
-          decoration: const InputDecoration(hintText: 'Digite Teléfono'),
-        ),
-        TextField(
-          controller: _categoriaProv,
-          decoration: const InputDecoration(hintText: 'Digite Categoría'),
-        ),
-          TextField(
-          controller: _estadoProv,
-          decoration: const InputDecoration(hintText: 'Digite Estado'),
-        ),
+  Scaffold buildColumn() {
+    return Scaffold(
+       body:  SingleChildScrollView(
+        child: Padding(padding: const EdgeInsets.symmetric(vertical: 80, horizontal: 200),
+          child: Column(
+            children: [
+          const SizedBox(height: 16),
+              TextFormField(
+      autofocus: true,
+      textCapitalization: TextCapitalization.words,
+      controller: _nombreProveedor,
+      decoration: const InputDecoration(
+        labelText: 'Nombre',
+        suffixIcon: Icon(Icons.group_outlined),
+        icon: Icon(Icons.assignment_ind_outlined),
+      ),
+      onChanged: (value) {
+        print('value: $value');
+      },
+    ),
+    const SizedBox(height: 16),
+
+    TextFormField(
+      autofocus: true,
+      textCapitalization: TextCapitalization.words,
+      controller: _categoriaProv,
+      decoration: const InputDecoration(
+        labelText: 'Categoria',
+        suffixIcon: Icon(Icons.group_outlined),
+        icon: Icon(Icons.assignment_ind_outlined),
+      ),
+      onChanged: (value) {
+        print('value: $value');
+      },
+    ),
+    const SizedBox(height: 16),
+
+    TextFormField(
+      autofocus: true,
+      textCapitalization: TextCapitalization.words,
+      controller: _nit,
+      decoration: const InputDecoration(
+        labelText: 'Nit',
+        suffixIcon: Icon(Icons.group_outlined),
+        icon: Icon(Icons.assignment_ind_outlined),
+      ),
+      onChanged: (value) {
+        print('value: $value');
+      },
+    ),
+    const SizedBox(height: 16),
+
+    TextFormField(
+      autofocus: true,
+      textCapitalization: TextCapitalization.words,
+      controller: _emailProv,
+      decoration: const InputDecoration(
+        labelText: 'Correo electronico',
+        suffixIcon: Icon(Icons.group_outlined),
+        icon: Icon(Icons.assignment_ind_outlined),
+      ),
+      onChanged: (value) {
+        print('value: $value');
+      },
+    ),
+    const SizedBox(height: 16),
+
+    TextFormField(
+      autofocus: true,
+      textCapitalization: TextCapitalization.words,
+      controller: _telefonoProv,
+      decoration: const InputDecoration(
+        labelText: 'Telefono',
+        suffixIcon: Icon(Icons.group_outlined),
+        icon: Icon(Icons.assignment_ind_outlined),
+      ),
+      onChanged: (value) {
+        print('value: $value');
+      },
+    ),
+    const SizedBox(height: 16),
+
+    TextFormField(
+      autofocus: true,
+      textCapitalization: TextCapitalization.words,
+      controller: _estadoProv,
+      decoration: const InputDecoration(
+        labelText: 'Estado',
+        suffixIcon: Icon(Icons.group_outlined),
+        icon: Icon(Icons.assignment_ind_outlined),
+      ),
+      onChanged: (value) {
+        print('value: $value');
+      },
+    ),
+
+    const SizedBox(height: 16),
         ElevatedButton(
           onPressed: () {
             setState(() {
@@ -137,6 +204,9 @@ class _editarProveedorState extends State<editarProveedor> {
           child: const Text('Editar proveedor'),
         ),
       ],
+          ),
+        ),
+       ),
     );
   }
 
